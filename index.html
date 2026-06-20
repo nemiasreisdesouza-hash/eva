@@ -1,0 +1,2392 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Eva Mentora — Mentoria & Desenvolvimento Pessoal</title>
+    <meta name="description" content="Eva Mentora — Transforme sua vida com mentoria personalizada. Desenvolvimento pessoal, liderança e empoderamento feminino.">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,500;0,600;0,700;1,400;1,500&family=Inter:wght@300;400;500;600;700&family=Cormorant+Garamond:ital,wght@0,400;0,500;0,600;1,400;1,500&display=swap" rel="stylesheet">
+    <style>
+        /* ═══════════════════════════════════════════════════
+           RESET & VARIABLES
+           ═══════════════════════════════════════════════════ */
+        *, *::before, *::after {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        :root {
+            --color-bg: #FAF7F2;
+            --color-bg-alt: #F3EDE4;
+            --color-bg-dark: #1A1612;
+            --color-bg-card: #FFFFFF;
+            --color-primary: #8B6F4E;
+            --color-primary-light: #B8976A;
+            --color-primary-dark: #6B5438;
+            --color-accent: #C4956A;
+            --color-gold: #D4A76A;
+            --color-rose: #C49B8A;
+            --color-text: #2D2520;
+            --color-text-light: #6B5F56;
+            --color-text-muted: #9B8F85;
+            --color-border: #E8DFD4;
+            --color-white: #FFFFFF;
+            --font-display: 'Playfair Display', Georgia, serif;
+            --font-body: 'Inter', -apple-system, sans-serif;
+            --font-elegant: 'Cormorant Garamond', Georgia, serif;
+            --transition-smooth: cubic-bezier(0.25, 0.46, 0.45, 0.94);
+            --transition-spring: cubic-bezier(0.34, 1.56, 0.64, 1);
+            --shadow-soft: 0 2px 20px rgba(139, 111, 78, 0.08);
+            --shadow-medium: 0 8px 40px rgba(139, 111, 78, 0.12);
+            --shadow-large: 0 20px 60px rgba(139, 111, 78, 0.15);
+        }
+
+        html {
+            scroll-behavior: smooth;
+            font-size: 16px;
+            overflow-x: hidden;
+        }
+
+        body {
+            font-family: var(--font-body);
+            color: var(--color-text);
+            background-color: var(--color-bg);
+            line-height: 1.7;
+            overflow-x: hidden;
+            -webkit-font-smoothing: antialiased;
+            -moz-osx-font-smoothing: grayscale;
+        }
+
+        /* ═══════════════════════════════════════════════════
+           CURSOR CUSTOM (Desktop)
+           ═══════════════════════════════════════════════════ */
+        .cursor-dot {
+            width: 8px;
+            height: 8px;
+            background: var(--color-primary);
+            border-radius: 50%;
+            position: fixed;
+            top: 0; left: 0;
+            pointer-events: none;
+            z-index: 99999;
+            transition: transform 0.15s var(--transition-smooth);
+            mix-blend-mode: difference;
+        }
+        .cursor-ring {
+            width: 40px;
+            height: 40px;
+            border: 1.5px solid var(--color-primary-light);
+            border-radius: 50%;
+            position: fixed;
+            top: 0; left: 0;
+            pointer-events: none;
+            z-index: 99998;
+            transition: all 0.3s var(--transition-smooth);
+            opacity: 0.5;
+        }
+        .cursor-ring.hover {
+            transform: scale(1.8);
+            opacity: 0.2;
+            border-color: var(--color-gold);
+        }
+
+        @media (max-width: 768px) {
+            .cursor-dot, .cursor-ring { display: none; }
+        }
+
+        /* ═══════════════════════════════════════════════════
+           LOADER
+           ═══════════════════════════════════════════════════ */
+        .loader-overlay {
+            position: fixed;
+            top: 0; left: 0; right: 0; bottom: 0;
+            background: var(--color-bg);
+            z-index: 100000;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            flex-direction: column;
+            transition: opacity 0.8s ease, visibility 0.8s ease;
+        }
+        .loader-overlay.hidden {
+            opacity: 0;
+            visibility: hidden;
+        }
+        .loader-logo {
+            font-family: var(--font-display);
+            font-size: 2.5rem;
+            color: var(--color-primary);
+            letter-spacing: 0.15em;
+            opacity: 0;
+            animation: loaderFade 1.5s ease forwards;
+        }
+        .loader-line {
+            width: 120px;
+            height: 1px;
+            background: var(--color-border);
+            margin-top: 1.5rem;
+            position: relative;
+            overflow: hidden;
+        }
+        .loader-line::after {
+            content: '';
+            position: absolute;
+            top: 0; left: -100%;
+            width: 100%; height: 100%;
+            background: var(--color-gold);
+            animation: loaderSlide 1.5s ease-in-out infinite;
+        }
+        @keyframes loaderFade { to { opacity: 1; } }
+        @keyframes loaderSlide {
+            0% { left: -100%; }
+            50% { left: 0; }
+            100% { left: 100%; }
+        }
+
+        /* ═══════════════════════════════════════════════════
+           NAVIGATION
+           ═══════════════════════════════════════════════════ */
+        .navbar {
+            position: fixed;
+            top: 0; left: 0; right: 0;
+            z-index: 9999;
+            padding: 1.5rem 3rem;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            transition: all 0.5s var(--transition-smooth);
+            background: transparent;
+        }
+        .navbar.scrolled {
+            background: rgba(250, 247, 242, 0.92);
+            backdrop-filter: blur(20px);
+            -webkit-backdrop-filter: blur(20px);
+            padding: 1rem 3rem;
+            box-shadow: 0 1px 30px rgba(139, 111, 78, 0.06);
+        }
+        .nav-brand {
+            font-family: var(--font-display);
+            font-size: 1.6rem;
+            font-weight: 600;
+            color: var(--color-primary-dark);
+            text-decoration: none;
+            letter-spacing: 0.05em;
+            transition: color 0.3s ease;
+        }
+        .nav-brand span {
+            color: var(--color-gold);
+            font-style: italic;
+        }
+        .nav-links {
+            display: flex;
+            align-items: center;
+            gap: 2.5rem;
+            list-style: none;
+        }
+        .nav-links a {
+            font-family: var(--font-body);
+            font-size: 0.82rem;
+            font-weight: 500;
+            color: var(--color-text-light);
+            text-decoration: none;
+            letter-spacing: 0.12em;
+            text-transform: uppercase;
+            position: relative;
+            padding: 0.3rem 0;
+            transition: color 0.3s ease;
+        }
+        .nav-links a::after {
+            content: '';
+            position: absolute;
+            bottom: -2px; left: 0;
+            width: 0; height: 1px;
+            background: var(--color-gold);
+            transition: width 0.4s var(--transition-smooth);
+        }
+        .nav-links a:hover { color: var(--color-primary); }
+        .nav-links a:hover::after { width: 100%; }
+
+        .nav-cta {
+            background: var(--color-primary) !important;
+            color: var(--color-white) !important;
+            padding: 0.7rem 1.8rem !important;
+            border-radius: 50px;
+            font-size: 0.78rem !important;
+            letter-spacing: 0.1em !important;
+            transition: all 0.4s var(--transition-smooth) !important;
+        }
+        .nav-cta:hover {
+            background: var(--color-primary-dark) !important;
+            transform: translateY(-2px);
+            box-shadow: 0 8px 25px rgba(139, 111, 78, 0.3);
+        }
+        .nav-cta::after { display: none !important; }
+
+        /* Mobile Menu */
+        .menu-toggle {
+            display: none;
+            flex-direction: column;
+            gap: 6px;
+            cursor: pointer;
+            z-index: 10001;
+            background: none;
+            border: none;
+            padding: 5px;
+        }
+        .menu-toggle span {
+            width: 28px;
+            height: 1.5px;
+            background: var(--color-text);
+            transition: all 0.4s var(--transition-smooth);
+            transform-origin: center;
+        }
+        .menu-toggle.active span:nth-child(1) {
+            transform: rotate(45deg) translate(5px, 5px);
+        }
+        .menu-toggle.active span:nth-child(2) { opacity: 0; }
+        .menu-toggle.active span:nth-child(3) {
+            transform: rotate(-45deg) translate(5px, -5px);
+        }
+
+        .mobile-menu {
+            position: fixed;
+            top: 0; right: -100%;
+            width: 100%; height: 100vh;
+            background: var(--color-bg);
+            z-index: 10000;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            gap: 2rem;
+            transition: right 0.6s var(--transition-smooth);
+        }
+        .mobile-menu.active { right: 0; }
+        .mobile-menu a {
+            font-family: var(--font-display);
+            font-size: 2rem;
+            color: var(--color-text);
+            text-decoration: none;
+            opacity: 0;
+            transform: translateY(30px);
+            transition: all 0.4s ease;
+        }
+        .mobile-menu.active a {
+            opacity: 1;
+            transform: translateY(0);
+        }
+        .mobile-menu.active a:nth-child(1) { transition-delay: 0.15s; }
+        .mobile-menu.active a:nth-child(2) { transition-delay: 0.25s; }
+        .mobile-menu.active a:nth-child(3) { transition-delay: 0.35s; }
+        .mobile-menu.active a:nth-child(4) { transition-delay: 0.45s; }
+        .mobile-menu.active a:nth-child(5) { transition-delay: 0.55s; }
+
+        @media (max-width: 900px) {
+            .nav-links { display: none; }
+            .menu-toggle { display: flex; }
+            .navbar { padding: 1.2rem 1.5rem; }
+        }
+
+        /* ═══════════════════════════════════════════════════
+           HERO SECTION
+           ═══════════════════════════════════════════════════ */
+        .hero {
+            min-height: 100vh;
+            display: flex;
+            align-items: center;
+            position: relative;
+            overflow: hidden;
+            padding: 8rem 3rem 4rem;
+        }
+        .hero-bg-elements {
+            position: absolute;
+            top: 0; left: 0; right: 0; bottom: 0;
+            pointer-events: none;
+            overflow: hidden;
+        }
+        .hero-circle {
+            position: absolute;
+            border-radius: 50%;
+            border: 1px solid var(--color-border);
+            opacity: 0.4;
+        }
+        .hero-circle:nth-child(1) {
+            width: 600px; height: 600px;
+            top: -100px; right: -100px;
+            animation: floatCircle 20s ease-in-out infinite;
+        }
+        .hero-circle:nth-child(2) {
+            width: 400px; height: 400px;
+            bottom: -50px; left: -100px;
+            animation: floatCircle 15s ease-in-out infinite reverse;
+        }
+        .hero-circle:nth-child(3) {
+            width: 200px; height: 200px;
+            top: 30%; left: 40%;
+            border-color: var(--color-gold);
+            opacity: 0.15;
+            animation: floatCircle 12s ease-in-out infinite;
+        }
+        @keyframes floatCircle {
+            0%, 100% { transform: translate(0, 0) rotate(0deg); }
+            33% { transform: translate(20px, -30px) rotate(5deg); }
+            66% { transform: translate(-15px, 15px) rotate(-3deg); }
+        }
+
+        .hero-grid {
+            max-width: 1400px;
+            margin: 0 auto;
+            width: 100%;
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 4rem;
+            align-items: center;
+            position: relative;
+            z-index: 2;
+        }
+
+        .hero-content {
+            max-width: 620px;
+        }
+        .hero-eyebrow {
+            font-family: var(--font-body);
+            font-size: 0.72rem;
+            font-weight: 600;
+            letter-spacing: 0.25em;
+            text-transform: uppercase;
+            color: var(--color-gold);
+            margin-bottom: 1.5rem;
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+            opacity: 0;
+            animation: heroReveal 1s ease forwards 0.5s;
+        }
+        .hero-eyebrow::before {
+            content: '';
+            width: 40px; height: 1px;
+            background: var(--color-gold);
+        }
+        .hero-title {
+            font-family: var(--font-display);
+            font-size: clamp(2.8rem, 5vw, 4.2rem);
+            font-weight: 600;
+            line-height: 1.15;
+            color: var(--color-text);
+            margin-bottom: 1.5rem;
+            opacity: 0;
+            animation: heroReveal 1s ease forwards 0.7s;
+        }
+        .hero-title em {
+            font-style: italic;
+            color: var(--color-primary);
+            font-weight: 500;
+        }
+        .hero-subtitle {
+            font-family: var(--font-elegant);
+            font-size: 1.35rem;
+            color: var(--color-text-light);
+            line-height: 1.8;
+            margin-bottom: 2.5rem;
+            font-weight: 400;
+            opacity: 0;
+            animation: heroReveal 1s ease forwards 0.9s;
+        }
+        .hero-actions {
+            display: flex;
+            gap: 1.2rem;
+            align-items: center;
+            flex-wrap: wrap;
+            opacity: 0;
+            animation: heroReveal 1s ease forwards 1.1s;
+        }
+
+        @keyframes heroReveal {
+            from { opacity: 0; transform: translateY(30px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        .btn-primary {
+            display: inline-flex;
+            align-items: center;
+            gap: 0.6rem;
+            padding: 1rem 2.5rem;
+            background: var(--color-primary);
+            color: var(--color-white);
+            font-family: var(--font-body);
+            font-size: 0.82rem;
+            font-weight: 600;
+            letter-spacing: 0.1em;
+            text-transform: uppercase;
+            text-decoration: none;
+            border-radius: 50px;
+            border: none;
+            cursor: pointer;
+            transition: all 0.4s var(--transition-smooth);
+            position: relative;
+            overflow: hidden;
+        }
+        .btn-primary::before {
+            content: '';
+            position: absolute;
+            top: 50%; left: 50%;
+            width: 0; height: 0;
+            background: var(--color-primary-dark);
+            border-radius: 50%;
+            transform: translate(-50%, -50%);
+            transition: all 0.6s var(--transition-smooth);
+        }
+        .btn-primary:hover::before {
+            width: 300px; height: 300px;
+        }
+        .btn-primary span { position: relative; z-index: 1; }
+        .btn-primary:hover {
+            transform: translateY(-3px);
+            box-shadow: var(--shadow-large);
+        }
+
+        .btn-secondary {
+            display: inline-flex;
+            align-items: center;
+            gap: 0.6rem;
+            padding: 1rem 2rem;
+            background: transparent;
+            color: var(--color-primary);
+            font-family: var(--font-body);
+            font-size: 0.82rem;
+            font-weight: 600;
+            letter-spacing: 0.1em;
+            text-transform: uppercase;
+            text-decoration: none;
+            border: 1.5px solid var(--color-primary);
+            border-radius: 50px;
+            cursor: pointer;
+            transition: all 0.4s var(--transition-smooth);
+        }
+        .btn-secondary:hover {
+            background: var(--color-primary);
+            color: var(--color-white);
+            transform: translateY(-3px);
+            box-shadow: var(--shadow-medium);
+        }
+
+        .hero-visual {
+            position: relative;
+            display: flex;
+            justify-content: center;
+            opacity: 0;
+            animation: heroRevealRight 1.2s ease forwards 0.6s;
+        }
+        @keyframes heroRevealRight {
+            from { opacity: 0; transform: translateX(60px); }
+            to { opacity: 1; transform: translateX(0); }
+        }
+
+        .hero-image-wrapper {
+            position: relative;
+            width: 420px;
+            height: 520px;
+        }
+        .hero-image-wrapper img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            border-radius: 200px 200px 30px 30px;
+            filter: brightness(1.02) contrast(1.05);
+        }
+        .hero-image-frame {
+            position: absolute;
+            top: -15px; left: -15px; right: -15px; bottom: -15px;
+            border: 1px solid var(--color-gold);
+            border-radius: 215px 215px 45px 45px;
+            opacity: 0.4;
+        }
+        .hero-image-accent {
+            position: absolute;
+            bottom: 30px;
+            right: -40px;
+            background: var(--color-white);
+            padding: 1.2rem 1.8rem;
+            border-radius: 16px;
+            box-shadow: var(--shadow-medium);
+            display: flex;
+            align-items: center;
+            gap: 0.8rem;
+        }
+        .hero-image-accent .accent-icon {
+            width: 44px; height: 44px;
+            background: linear-gradient(135deg, var(--color-gold), var(--color-primary));
+            border-radius: 12px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.2rem;
+            color: white;
+        }
+        .hero-image-accent .accent-text {
+            font-size: 0.75rem;
+            font-weight: 600;
+            color: var(--color-text);
+            text-transform: uppercase;
+            letter-spacing: 0.05em;
+        }
+        .hero-image-accent .accent-text span {
+            display: block;
+            font-weight: 400;
+            color: var(--color-text-muted);
+            text-transform: none;
+            letter-spacing: 0;
+            font-size: 0.7rem;
+        }
+
+        .hero-stats {
+            position: absolute;
+            top: 60px; left: -50px;
+            background: var(--color-white);
+            padding: 1rem 1.5rem;
+            border-radius: 16px;
+            box-shadow: var(--shadow-medium);
+            text-align: center;
+        }
+        .hero-stats .stat-number {
+            font-family: var(--font-display);
+            font-size: 1.8rem;
+            font-weight: 700;
+            color: var(--color-primary);
+        }
+        .hero-stats .stat-label {
+            font-size: 0.65rem;
+            text-transform: uppercase;
+            letter-spacing: 0.1em;
+            color: var(--color-text-muted);
+            margin-top: 0.2rem;
+        }
+
+        @media (max-width: 1024px) {
+            .hero-grid { grid-template-columns: 1fr; text-align: center; }
+            .hero-content { max-width: 600px; margin: 0 auto; }
+            .hero-eyebrow { justify-content: center; }
+            .hero-actions { justify-content: center; }
+            .hero-image-wrapper { width: 320px; height: 420px; }
+            .hero { padding: 7rem 1.5rem 3rem; }
+        }
+        @media (max-width: 600px) {
+            .hero-image-wrapper { width: 260px; height: 350px; }
+            .hero-stats { left: -15px; top: 40px; }
+            .hero-image-accent { right: -15px; bottom: 20px; }
+        }
+
+        /* ═══════════════════════════════════════════════════
+           MARQUEE SCROLL
+           ═══════════════════════════════════════════════════ */
+        .marquee-section {
+            padding: 2rem 0;
+            overflow: hidden;
+            border-top: 1px solid var(--color-border);
+            border-bottom: 1px solid var(--color-border);
+            background: var(--color-bg-alt);
+        }
+        .marquee-track {
+            display: flex;
+            width: max-content;
+            animation: marqueeScroll 30s linear infinite;
+        }
+        .marquee-track:hover { animation-play-state: paused; }
+        .marquee-item {
+            display: flex;
+            align-items: center;
+            gap: 2.5rem;
+            padding: 0 2.5rem;
+            white-space: nowrap;
+        }
+        .marquee-text {
+            font-family: var(--font-elegant);
+            font-size: 1.3rem;
+            color: var(--color-text-light);
+            font-weight: 500;
+            letter-spacing: 0.05em;
+        }
+        .marquee-dot {
+            width: 6px; height: 6px;
+            border-radius: 50%;
+            background: var(--color-gold);
+        }
+        @keyframes marqueeScroll {
+            0% { transform: translateX(0); }
+            100% { transform: translateX(-50%); }
+        }
+
+        /* ═══════════════════════════════════════════════════
+           ABOUT SECTION
+           ═══════════════════════════════════════════════════ */
+        .about {
+            padding: 8rem 3rem;
+            position: relative;
+        }
+        .section-container {
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+        .section-label {
+            font-family: var(--font-body);
+            font-size: 0.7rem;
+            font-weight: 600;
+            letter-spacing: 0.3em;
+            text-transform: uppercase;
+            color: var(--color-gold);
+            margin-bottom: 1rem;
+            display: flex;
+            align-items: center;
+            gap: 0.8rem;
+        }
+        .section-label::before {
+            content: '';
+            width: 30px; height: 1px;
+            background: var(--color-gold);
+        }
+        .about-grid {
+            display: grid;
+            grid-template-columns: 1fr 1.2fr;
+            gap: 6rem;
+            align-items: center;
+        }
+        .about-image {
+            position: relative;
+        }
+        .about-image img {
+            width: 100%;
+            height: 500px;
+            object-fit: cover;
+            border-radius: 20px;
+            filter: brightness(1.03) saturate(0.95);
+        }
+        .about-image::before {
+            content: '';
+            position: absolute;
+            top: -20px; left: -20px;
+            width: 100%; height: 100%;
+            border: 1px solid var(--color-gold);
+            border-radius: 20px;
+            opacity: 0.3;
+            z-index: -1;
+        }
+        .about-quote {
+            position: absolute;
+            bottom: -30px;
+            right: -20px;
+            background: var(--color-primary);
+            color: var(--color-white);
+            padding: 1.5rem 2rem;
+            border-radius: 16px;
+            max-width: 260px;
+            font-family: var(--font-elegant);
+            font-size: 1rem;
+            font-style: italic;
+            line-height: 1.6;
+            box-shadow: var(--shadow-large);
+        }
+        .about-content h2 {
+            font-family: var(--font-display);
+            font-size: clamp(2rem, 3.5vw, 2.8rem);
+            font-weight: 600;
+            line-height: 1.2;
+            margin-bottom: 1.5rem;
+            color: var(--color-text);
+        }
+        .about-content h2 em {
+            font-style: italic;
+            color: var(--color-primary);
+        }
+        .about-content p {
+            font-size: 1.02rem;
+            color: var(--color-text-light);
+            line-height: 1.9;
+            margin-bottom: 1.2rem;
+        }
+        .about-signature {
+            font-family: var(--font-display);
+            font-size: 1.8rem;
+            font-style: italic;
+            color: var(--color-gold);
+            margin-top: 2rem;
+            opacity: 0.8;
+        }
+
+        @media (max-width: 900px) {
+            .about-grid { grid-template-columns: 1fr; gap: 3rem; }
+            .about { padding: 5rem 1.5rem; }
+            .about-quote { right: 10px; bottom: -20px; max-width: 220px; }
+        }
+
+        /* ═══════════════════════════════════════════════════
+           SERVICES / MENTORIAS
+           ═══════════════════════════════════════════════════ */
+        .services {
+            padding: 8rem 3rem;
+            background: var(--color-bg-alt);
+            position: relative;
+        }
+        .services-header {
+            text-align: center;
+            max-width: 700px;
+            margin: 0 auto 4rem;
+        }
+        .services-header h2 {
+            font-family: var(--font-display);
+            font-size: clamp(2rem, 3.5vw, 2.8rem);
+            font-weight: 600;
+            margin-bottom: 1rem;
+        }
+        .services-header h2 em {
+            font-style: italic;
+            color: var(--color-primary);
+        }
+        .services-header p {
+            font-family: var(--font-elegant);
+            font-size: 1.2rem;
+            color: var(--color-text-light);
+        }
+        .services-grid {
+            max-width: 1200px;
+            margin: 0 auto;
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 2rem;
+        }
+        .service-card {
+            background: var(--color-white);
+            border-radius: 24px;
+            padding: 2.8rem 2.2rem;
+            position: relative;
+            overflow: hidden;
+            transition: all 0.5s var(--transition-smooth);
+            border: 1px solid transparent;
+        }
+        .service-card::before {
+            content: '';
+            position: absolute;
+            top: 0; left: 0; right: 0;
+            height: 4px;
+            background: linear-gradient(90deg, var(--color-gold), var(--color-primary));
+            transform: scaleX(0);
+            transition: transform 0.5s var(--transition-smooth);
+            transform-origin: left;
+        }
+        .service-card:hover {
+            transform: translateY(-8px);
+            box-shadow: var(--shadow-large);
+            border-color: var(--color-border);
+        }
+        .service-card:hover::before { transform: scaleX(1); }
+
+        .service-icon {
+            width: 60px; height: 60px;
+            border-radius: 16px;
+            background: linear-gradient(135deg, rgba(212, 167, 106, 0.15), rgba(139, 111, 78, 0.08));
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.5rem;
+            margin-bottom: 1.5rem;
+        }
+        .service-card h3 {
+            font-family: var(--font-display);
+            font-size: 1.4rem;
+            font-weight: 600;
+            margin-bottom: 0.8rem;
+            color: var(--color-text);
+        }
+        .service-card p {
+            font-size: 0.92rem;
+            color: var(--color-text-light);
+            line-height: 1.8;
+            margin-bottom: 1.5rem;
+        }
+        .service-features {
+            list-style: none;
+            margin-bottom: 2rem;
+        }
+        .service-features li {
+            font-size: 0.85rem;
+            color: var(--color-text-light);
+            padding: 0.4rem 0;
+            padding-left: 1.5rem;
+            position: relative;
+        }
+        .service-features li::before {
+            content: '✦';
+            position: absolute;
+            left: 0;
+            color: var(--color-gold);
+            font-size: 0.7rem;
+        }
+        .service-price {
+            font-family: var(--font-display);
+            font-size: 0.9rem;
+            color: var(--color-primary);
+            font-weight: 600;
+            letter-spacing: 0.05em;
+        }
+
+        @media (max-width: 900px) {
+            .services-grid { grid-template-columns: 1fr; max-width: 480px; }
+            .services { padding: 5rem 1.5rem; }
+        }
+
+        /* ═══════════════════════════════════════════════════
+           METHODOLOGY
+           ═══════════════════════════════════════════════════ */
+        .methodology {
+            padding: 8rem 3rem;
+            background: var(--color-bg-dark);
+            color: var(--color-white);
+            position: relative;
+            overflow: hidden;
+        }
+        .methodology::before {
+            content: '';
+            position: absolute;
+            top: 0; left: 0; right: 0; bottom: 0;
+            background: radial-gradient(circle at 20% 50%, rgba(212, 167, 106, 0.08) 0%, transparent 60%),
+                        radial-gradient(circle at 80% 30%, rgba(196, 149, 106, 0.06) 0%, transparent 50%);
+            pointer-events: none;
+        }
+        .methodology-header {
+            text-align: center;
+            max-width: 600px;
+            margin: 0 auto 5rem;
+            position: relative;
+            z-index: 2;
+        }
+        .methodology-header .section-label { justify-content: center; }
+        .methodology-header h2 {
+            font-family: var(--font-display);
+            font-size: clamp(2rem, 3.5vw, 2.8rem);
+            font-weight: 600;
+            margin-bottom: 1rem;
+            color: var(--color-white);
+        }
+        .methodology-header h2 em {
+            color: var(--color-gold);
+            font-style: italic;
+        }
+        .methodology-header p {
+            font-family: var(--font-elegant);
+            font-size: 1.15rem;
+            color: rgba(255, 255, 255, 0.6);
+        }
+
+        .method-steps {
+            max-width: 1000px;
+            margin: 0 auto;
+            position: relative;
+            z-index: 2;
+        }
+        .method-step {
+            display: grid;
+            grid-template-columns: 80px 1fr;
+            gap: 2.5rem;
+            padding: 2.5rem 0;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.08);
+            align-items: start;
+            opacity: 0;
+            transform: translateY(40px);
+            transition: all 0.7s var(--transition-smooth);
+        }
+        .method-step.visible {
+            opacity: 1;
+            transform: translateY(0);
+        }
+        .method-step:last-child { border-bottom: none; }
+        .step-number {
+            font-family: var(--font-display);
+            font-size: 3rem;
+            font-weight: 700;
+            color: var(--color-gold);
+            opacity: 0.3;
+            line-height: 1;
+        }
+        .step-content h3 {
+            font-family: var(--font-display);
+            font-size: 1.4rem;
+            font-weight: 600;
+            margin-bottom: 0.5rem;
+            color: var(--color-white);
+        }
+        .step-content p {
+            font-size: 0.95rem;
+            color: rgba(255, 255, 255, 0.55);
+            line-height: 1.8;
+        }
+
+        @media (max-width: 768px) {
+            .method-step {
+                grid-template-columns: 50px 1fr;
+                gap: 1.5rem;
+            }
+            .step-number { font-size: 2rem; }
+            .methodology { padding: 5rem 1.5rem; }
+        }
+
+        /* ═══════════════════════════════════════════════════
+           TESTIMONIALS
+           ═══════════════════════════════════════════════════ */
+        .testimonials {
+            padding: 8rem 3rem;
+            position: relative;
+            overflow: hidden;
+        }
+        .testimonials-header {
+            text-align: center;
+            max-width: 600px;
+            margin: 0 auto 4rem;
+        }
+        .testimonials-header h2 {
+            font-family: var(--font-display);
+            font-size: clamp(2rem, 3.5vw, 2.8rem);
+            font-weight: 600;
+            margin-bottom: 1rem;
+        }
+        .testimonials-header h2 em {
+            color: var(--color-primary);
+            font-style: italic;
+        }
+
+        .testimonials-slider {
+            max-width: 1200px;
+            margin: 0 auto;
+            position: relative;
+        }
+        .testimonials-track {
+            display: flex;
+            gap: 2rem;
+            overflow-x: auto;
+            scroll-snap-type: x mandatory;
+            scrollbar-width: none;
+            -ms-overflow-style: none;
+            padding: 1rem 0 2rem;
+        }
+        .testimonials-track::-webkit-scrollbar { display: none; }
+
+        .testimonial-card {
+            flex: 0 0 380px;
+            scroll-snap-align: center;
+            background: var(--color-white);
+            border-radius: 24px;
+            padding: 2.5rem;
+            border: 1px solid var(--color-border);
+            transition: all 0.4s var(--transition-smooth);
+            position: relative;
+        }
+        .testimonial-card:hover {
+            transform: translateY(-5px);
+            box-shadow: var(--shadow-medium);
+        }
+        .testimonial-quote {
+            font-family: var(--font-display);
+            font-size: 3rem;
+            color: var(--color-gold);
+            opacity: 0.3;
+            line-height: 1;
+            margin-bottom: 0.5rem;
+        }
+        .testimonial-text {
+            font-family: var(--font-elegant);
+            font-size: 1.1rem;
+            color: var(--color-text-light);
+            line-height: 1.8;
+            margin-bottom: 1.5rem;
+            font-style: italic;
+        }
+        .testimonial-author {
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+        }
+        .testimonial-avatar {
+            width: 48px; height: 48px;
+            border-radius: 50%;
+            background: linear-gradient(135deg, var(--color-gold), var(--color-primary));
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-family: var(--font-display);
+            font-size: 1.1rem;
+            color: var(--color-white);
+            font-weight: 600;
+        }
+        .testimonial-name {
+            font-weight: 600;
+            font-size: 0.9rem;
+            color: var(--color-text);
+        }
+        .testimonial-role {
+            font-size: 0.78rem;
+            color: var(--color-text-muted);
+        }
+        .testimonial-stars {
+            color: var(--color-gold);
+            font-size: 0.8rem;
+            letter-spacing: 2px;
+            margin-bottom: 1rem;
+        }
+
+        @media (max-width: 768px) {
+            .testimonial-card { flex: 0 0 300px; padding: 2rem; }
+            .testimonials { padding: 5rem 1.5rem; }
+        }
+
+        /* ═══════════════════════════════════════════════════
+           RESULTS / NÚMEROS
+           ═══════════════════════════════════════════════════ */
+        .results {
+            padding: 6rem 3rem;
+            background: linear-gradient(135deg, var(--color-primary) 0%, var(--color-primary-dark) 100%);
+            color: var(--color-white);
+        }
+        .results-grid {
+            max-width: 1000px;
+            margin: 0 auto;
+            display: grid;
+            grid-template-columns: repeat(4, 1fr);
+            gap: 2rem;
+            text-align: center;
+        }
+        .result-item {
+            padding: 1.5rem;
+        }
+        .result-number {
+            font-family: var(--font-display);
+            font-size: clamp(2.5rem, 4vw, 3.5rem);
+            font-weight: 700;
+            color: var(--color-white);
+            line-height: 1;
+            margin-bottom: 0.5rem;
+        }
+        .result-label {
+            font-size: 0.8rem;
+            text-transform: uppercase;
+            letter-spacing: 0.15em;
+            opacity: 0.7;
+            font-weight: 500;
+        }
+
+        @media (max-width: 768px) {
+            .results-grid { grid-template-columns: repeat(2, 1fr); }
+            .results { padding: 4rem 1.5rem; }
+        }
+
+        /* ═══════════════════════════════════════════════════
+           INSTAGRAM FEED SECTION
+           ═══════════════════════════════════════════════════ */
+        .instagram-section {
+            padding: 6rem 3rem;
+            background: var(--color-bg-alt);
+            text-align: center;
+        }
+        .instagram-section h2 {
+            font-family: var(--font-display);
+            font-size: clamp(1.8rem, 3vw, 2.4rem);
+            font-weight: 600;
+            margin-bottom: 0.5rem;
+        }
+        .instagram-section h2 em {
+            color: var(--color-primary);
+            font-style: italic;
+        }
+        .instagram-handle {
+            font-family: var(--font-elegant);
+            font-size: 1.1rem;
+            color: var(--color-text-muted);
+            margin-bottom: 3rem;
+        }
+        .instagram-handle a {
+            color: var(--color-primary);
+            text-decoration: none;
+        }
+        .instagram-grid {
+            max-width: 1000px;
+            margin: 0 auto;
+            display: grid;
+            grid-template-columns: repeat(4, 1fr);
+            gap: 1rem;
+        }
+        .instagram-item {
+            aspect-ratio: 1;
+            border-radius: 16px;
+            overflow: hidden;
+            position: relative;
+            cursor: pointer;
+            background: var(--color-border);
+        }
+        .instagram-item img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            transition: transform 0.6s var(--transition-smooth);
+        }
+        .instagram-item:hover img {
+            transform: scale(1.1);
+        }
+        .instagram-item-overlay {
+            position: absolute;
+            top: 0; left: 0; right: 0; bottom: 0;
+            background: rgba(139, 111, 78, 0.7);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            opacity: 0;
+            transition: opacity 0.4s ease;
+        }
+        .instagram-item:hover .instagram-item-overlay { opacity: 1; }
+        .instagram-item-overlay span {
+            color: white;
+            font-size: 1.5rem;
+        }
+
+        @media (max-width: 768px) {
+            .instagram-grid { grid-template-columns: repeat(2, 1fr); }
+            .instagram-section { padding: 4rem 1.5rem; }
+        }
+
+        /* ═══════════════════════════════════════════════════
+           CONTACT / CTA SECTION
+           ═══════════════════════════════════════════════════ */
+        .contact {
+            padding: 8rem 3rem;
+            position: relative;
+        }
+        .contact-wrapper {
+            max-width: 1100px;
+            margin: 0 auto;
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 4rem;
+            align-items: start;
+        }
+        .contact-info h2 {
+            font-family: var(--font-display);
+            font-size: clamp(2rem, 3.5vw, 2.8rem);
+            font-weight: 600;
+            margin-bottom: 1rem;
+            line-height: 1.2;
+        }
+        .contact-info h2 em {
+            color: var(--color-primary);
+            font-style: italic;
+        }
+        .contact-info > p {
+            font-family: var(--font-elegant);
+            font-size: 1.15rem;
+            color: var(--color-text-light);
+            line-height: 1.8;
+            margin-bottom: 2rem;
+        }
+        .contact-details {
+            list-style: none;
+            display: flex;
+            flex-direction: column;
+            gap: 1rem;
+        }
+        .contact-details li {
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+            font-size: 0.95rem;
+            color: var(--color-text-light);
+        }
+        .contact-details li .cd-icon {
+            width: 44px; height: 44px;
+            border-radius: 12px;
+            background: rgba(212, 167, 106, 0.12);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.1rem;
+            flex-shrink: 0;
+        }
+        .contact-details a {
+            color: var(--color-primary);
+            text-decoration: none;
+            transition: color 0.3s ease;
+        }
+        .contact-details a:hover { color: var(--color-primary-dark); }
+
+        .contact-form {
+            background: var(--color-white);
+            padding: 3rem;
+            border-radius: 24px;
+            box-shadow: var(--shadow-soft);
+            border: 1px solid var(--color-border);
+        }
+        .form-group {
+            margin-bottom: 1.5rem;
+        }
+        .form-group label {
+            display: block;
+            font-size: 0.78rem;
+            font-weight: 600;
+            letter-spacing: 0.1em;
+            text-transform: uppercase;
+            color: var(--color-text-light);
+            margin-bottom: 0.5rem;
+        }
+        .form-group input,
+        .form-group textarea,
+        .form-group select {
+            width: 100%;
+            padding: 0.9rem 1.2rem;
+            border: 1.5px solid var(--color-border);
+            border-radius: 12px;
+            font-family: var(--font-body);
+            font-size: 0.92rem;
+            color: var(--color-text);
+            background: var(--color-bg);
+            transition: all 0.3s ease;
+            outline: none;
+        }
+        .form-group input:focus,
+        .form-group textarea:focus,
+        .form-group select:focus {
+            border-color: var(--color-primary);
+            box-shadow: 0 0 0 3px rgba(139, 111, 78, 0.1);
+        }
+        .form-group textarea {
+            height: 120px;
+            resize: vertical;
+        }
+        .form-submit {
+            width: 100%;
+            padding: 1rem;
+            background: var(--color-primary);
+            color: var(--color-white);
+            border: none;
+            border-radius: 12px;
+            font-family: var(--font-body);
+            font-size: 0.85rem;
+            font-weight: 600;
+            letter-spacing: 0.1em;
+            text-transform: uppercase;
+            cursor: pointer;
+            transition: all 0.4s var(--transition-smooth);
+        }
+        .form-submit:hover {
+            background: var(--color-primary-dark);
+            transform: translateY(-2px);
+            box-shadow: var(--shadow-medium);
+        }
+
+        @media (max-width: 900px) {
+            .contact-wrapper { grid-template-columns: 1fr; }
+            .contact { padding: 5rem 1.5rem; }
+            .contact-form { padding: 2rem; }
+        }
+
+        /* ═══════════════════════════════════════════════════
+           FOOTER
+           ═══════════════════════════════════════════════════ */
+        .footer {
+            background: var(--color-bg-dark);
+            color: rgba(255, 255, 255, 0.5);
+            padding: 4rem 3rem 2rem;
+        }
+        .footer-inner {
+            max-width: 1200px;
+            margin: 0 auto;
+            display: grid;
+            grid-template-columns: 2fr 1fr 1fr 1fr;
+            gap: 3rem;
+            padding-bottom: 3rem;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.08);
+        }
+        .footer-brand {
+            font-family: var(--font-display);
+            font-size: 1.5rem;
+            color: var(--color-white);
+            margin-bottom: 1rem;
+        }
+        .footer-brand span {
+            color: var(--color-gold);
+            font-style: italic;
+        }
+        .footer-desc {
+            font-size: 0.88rem;
+            line-height: 1.8;
+            max-width: 320px;
+        }
+        .footer-col h4 {
+            font-family: var(--font-display);
+            font-size: 1rem;
+            color: var(--color-white);
+            margin-bottom: 1.2rem;
+            font-weight: 600;
+        }
+        .footer-col ul {
+            list-style: none;
+        }
+        .footer-col ul li { margin-bottom: 0.6rem; }
+        .footer-col ul a {
+            color: rgba(255, 255, 255, 0.5);
+            text-decoration: none;
+            font-size: 0.88rem;
+            transition: color 0.3s ease;
+        }
+        .footer-col ul a:hover { color: var(--color-gold); }
+        .footer-social {
+            display: flex;
+            gap: 1rem;
+            margin-top: 1.5rem;
+        }
+        .footer-social a {
+            width: 40px; height: 40px;
+            border-radius: 50%;
+            border: 1px solid rgba(255, 255, 255, 0.15);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: rgba(255, 255, 255, 0.6);
+            text-decoration: none;
+            font-size: 0.9rem;
+            transition: all 0.3s ease;
+        }
+        .footer-social a:hover {
+            border-color: var(--color-gold);
+            color: var(--color-gold);
+            transform: translateY(-3px);
+        }
+        .footer-bottom {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding-top: 2rem;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            font-size: 0.78rem;
+        }
+
+        @media (max-width: 900px) {
+            .footer-inner {
+                grid-template-columns: 1fr 1fr;
+            }
+            .footer { padding: 3rem 1.5rem 1.5rem; }
+            .footer-bottom { flex-direction: column; gap: 0.5rem; }
+        }
+        @media (max-width: 600px) {
+            .footer-inner { grid-template-columns: 1fr; }
+        }
+
+        /* ═══════════════════════════════════════════════════
+           SCROLL REVEAL ANIMATIONS
+           ═══════════════════════════════════════════════════ */
+        .reveal {
+            opacity: 0;
+            transform: translateY(50px);
+            transition: all 0.8s var(--transition-smooth);
+        }
+        .reveal.visible {
+            opacity: 1;
+            transform: translateY(0);
+        }
+        .reveal-left {
+            opacity: 0;
+            transform: translateX(-60px);
+            transition: all 0.8s var(--transition-smooth);
+        }
+        .reveal-left.visible {
+            opacity: 1;
+            transform: translateX(0);
+        }
+        .reveal-right {
+            opacity: 0;
+            transform: translateX(60px);
+            transition: all 0.8s var(--transition-smooth);
+        }
+        .reveal-right.visible {
+            opacity: 1;
+            transform: translateX(0);
+        }
+        .reveal-scale {
+            opacity: 0;
+            transform: scale(0.9);
+            transition: all 0.8s var(--transition-smooth);
+        }
+        .reveal-scale.visible {
+            opacity: 1;
+            transform: scale(1);
+        }
+
+        /* ═══════════════════════════════════════════════════
+           BACK TO TOP
+           ═══════════════════════════════════════════════════ */
+        .back-to-top {
+            position: fixed;
+            bottom: 2rem;
+            right: 2rem;
+            width: 48px;
+            height: 48px;
+            border-radius: 50%;
+            background: var(--color-primary);
+            color: var(--color-white);
+            border: none;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.2rem;
+            z-index: 999;
+            opacity: 0;
+            visibility: hidden;
+            transform: translateY(20px);
+            transition: all 0.4s var(--transition-smooth);
+            box-shadow: var(--shadow-medium);
+        }
+        .back-to-top.visible {
+            opacity: 1;
+            visibility: visible;
+            transform: translateY(0);
+        }
+        .back-to-top:hover {
+            background: var(--color-primary-dark);
+            transform: translateY(-3px);
+        }
+
+        /* ═══════════════════════════════════════════════════
+           TOAST NOTIFICATION
+           ═══════════════════════════════════════════════════ */
+        .toast {
+            position: fixed;
+            bottom: 2rem;
+            left: 50%;
+            transform: translateX(-50%) translateY(100px);
+            background: var(--color-bg-dark);
+            color: var(--color-white);
+            padding: 1rem 2rem;
+            border-radius: 12px;
+            font-size: 0.88rem;
+            z-index: 100001;
+            opacity: 0;
+            transition: all 0.5s var(--transition-spring);
+            box-shadow: var(--shadow-large);
+        }
+        .toast.show {
+            opacity: 1;
+            transform: translateX(-50%) translateY(0);
+        }
+
+        /* ═══════════════════════════════════════════════════
+           WHATSAPP FLOATING
+           ═══════════════════════════════════════════════════ */
+        .whatsapp-float {
+            position: fixed;
+            bottom: 2rem;
+            left: 2rem;
+            width: 56px;
+            height: 56px;
+            border-radius: 50%;
+            background: #25D366;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            z-index: 999;
+            text-decoration: none;
+            box-shadow: 0 4px 20px rgba(37, 211, 102, 0.4);
+            transition: all 0.4s var(--transition-smooth);
+            animation: whatsappPulse 2s ease-in-out infinite;
+        }
+        .whatsapp-float:hover {
+            transform: scale(1.1) translateY(-3px);
+            box-shadow: 0 6px 30px rgba(37, 211, 102, 0.5);
+        }
+        .whatsapp-float svg {
+            width: 28px;
+            height: 28px;
+            fill: white;
+        }
+        @keyframes whatsappPulse {
+            0%, 100% { box-shadow: 0 4px 20px rgba(37, 211, 102, 0.4); }
+            50% { box-shadow: 0 4px 30px rgba(37, 211, 102, 0.6); }
+        }
+
+        /* ═══════════════════════════════════════════════════
+           PARTICLE CANVAS
+           ═══════════════════════════════════════════════════ */
+        #particle-canvas {
+            position: absolute;
+            top: 0; left: 0;
+            width: 100%; height: 100%;
+            pointer-events: none;
+            z-index: 1;
+        }
+    </style>
+</head>
+<body>
+
+    <!-- Loader -->
+    <div class="loader-overlay" id="loader">
+        <div class="loader-logo">Eva Mentora</div>
+        <div class="loader-line"></div>
+    </div>
+
+    <!-- Custom Cursor -->
+    <div class="cursor-dot" id="cursorDot"></div>
+    <div class="cursor-ring" id="cursorRing"></div>
+
+    <!-- Navigation -->
+    <nav class="navbar" id="navbar">
+        <a href="#hero" class="nav-brand">Eva <span>Mentora</span></a>
+        <ul class="nav-links">
+            <li><a href="#sobre">Sobre</a></li>
+            <li><a href="#mentorias">Mentorias</a></li>
+            <li><a href="#metodo">Método</a></li>
+            <li><a href="#depoimentos">Depoimentos</a></li>
+            <li><a href="#contato" class="nav-cta">Agende Agora</a></li>
+        </ul>
+        <button class="menu-toggle" id="menuToggle" aria-label="Menu">
+            <span></span><span></span><span></span>
+        </button>
+    </nav>
+
+    <!-- Mobile Menu -->
+    <div class="mobile-menu" id="mobileMenu">
+        <a href="#sobre" onclick="closeMobile()">Sobre</a>
+        <a href="#mentorias" onclick="closeMobile()">Mentorias</a>
+        <a href="#metodo" onclick="closeMobile()">Método</a>
+        <a href="#depoimentos" onclick="closeMobile()">Depoimentos</a>
+        <a href="#contato" onclick="closeMobile()">Agende Agora</a>
+    </div>
+
+    <!-- ═══════════════ HERO ═══════════════ -->
+    <section class="hero" id="hero">
+        <canvas id="particle-canvas"></canvas>
+        <div class="hero-bg-elements">
+            <div class="hero-circle"></div>
+            <div class="hero-circle"></div>
+            <div class="hero-circle"></div>
+        </div>
+        <div class="hero-grid">
+            <div class="hero-content">
+                <div class="hero-eyebrow">Mentoria & Desenvolvimento Pessoal</div>
+                <h1 class="hero-title">
+                    Transforme sua vida com <em>clareza, propósito</em> e direção
+                </h1>
+                <p class="hero-subtitle">
+                    Descubra o poder de uma mentoria personalizada que vai além do superficial. 
+                    Juntas, vamos desbloquear seu verdadeiro potencial e construir a vida que você merece.
+                </p>
+                <div class="hero-actions">
+                    <a href="#contato" class="btn-primary">
+                        <span>Quero minha mentoria</span>
+                        <span>→</span>
+                    </a>
+                    <a href="#mentorias" class="btn-secondary">Conheça os programas</a>
+                </div>
+            </div>
+            <div class="hero-visual">
+                <div class="hero-image-wrapper">
+                    <img src="https://images.pexels.com/photos/27935427/pexels-photo-27935427.jpeg?auto=compress&cs=tinysrgb&fit=crop&h=1200&w=800" alt="Eva Mentora - Desenvolvimento Pessoal" loading="eager">
+                    <div class="hero-image-frame"></div>
+                    <div class="hero-stats">
+                        <div class="stat-number" data-count="500">0</div>
+                        <div class="stat-label">Vidas Transformadas</div>
+                    </div>
+                    <div class="hero-image-accent">
+                        <div class="accent-icon">✦</div>
+                        <div class="accent-text">
+                            Mentora Certificada
+                            <span>Especialista em Desenvolvimento</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- ═══════════════ MARQUEE ═══════════════ -->
+    <div class="marquee-section">
+        <div class="marquee-track">
+            <div class="marquee-item">
+                <span class="marquee-text">Autoconhecimento</span>
+                <span class="marquee-dot"></span>
+                <span class="marquee-text">Propósito</span>
+                <span class="marquee-dot"></span>
+                <span class="marquee-text">Liderança Feminina</span>
+                <span class="marquee-dot"></span>
+                <span class="marquee-text">Mindset de Crescimento</span>
+                <span class="marquee-dot"></span>
+                <span class="marquee-text">Inteligência Emocional</span>
+                <span class="marquee-dot"></span>
+                <span class="marquee-text">Empoderamento</span>
+                <span class="marquee-dot"></span>
+                <span class="marquee-text">Clareza Mental</span>
+                <span class="marquee-dot"></span>
+                <span class="marquee-text">Transformação</span>
+                <span class="marquee-dot"></span>
+            </div>
+            <div class="marquee-item">
+                <span class="marquee-text">Autoconhecimento</span>
+                <span class="marquee-dot"></span>
+                <span class="marquee-text">Propósito</span>
+                <span class="marquee-dot"></span>
+                <span class="marquee-text">Liderança Feminina</span>
+                <span class="marquee-dot"></span>
+                <span class="marquee-text">Mindset de Crescimento</span>
+                <span class="marquee-dot"></span>
+                <span class="marquee-text">Inteligência Emocional</span>
+                <span class="marquee-dot"></span>
+                <span class="marquee-text">Empoderamento</span>
+                <span class="marquee-dot"></span>
+                <span class="marquee-text">Clareza Mental</span>
+                <span class="marquee-dot"></span>
+                <span class="marquee-text">Transformação</span>
+                <span class="marquee-dot"></span>
+            </div>
+        </div>
+    </div>
+
+    <!-- ═══════════════ ABOUT ═══════════════ -->
+    <section class="about" id="sobre">
+        <div class="section-container">
+            <div class="about-grid">
+                <div class="about-image reveal-left">
+                    <img src="https://images.pexels.com/photos/9064790/pexels-photo-9064790.jpeg?auto=compress&cs=tinysrgb&fit=crop&h=627&w=1200" alt="Eva Mentora - Sobre" loading="lazy">
+                    <div class="about-quote">
+                        "Acreditar em si mesma é o primeiro passo para uma vida extraordinária."
+                    </div>
+                </div>
+                <div class="about-content reveal-right">
+                    <div class="section-label">Sobre mim</div>
+                    <h2>Uma jornada dedicada a <em>despertar o melhor</em> em cada mulher</h2>
+                    <p>
+                        Sou Eva, mentora de desenvolvimento pessoal e liderança feminina. 
+                        Há anos venho ajudando mulheres a descobrirem sua verdadeira essência, 
+                        superarem suas limitações e construírem vidas com mais propósito, 
+                        autenticidade e abundância.
+                    </p>
+                    <p>
+                        Minha abordagem combina ferramentas de coaching, inteligência emocional 
+                        e desenvolvimento humano, criando um espaço seguro e transformador para 
+                        cada mentorada alcançar resultados reais e duradouros.
+                    </p>
+                    <p>
+                        Mais do que uma mentoria, ofereço uma parceria genuína no seu processo 
+                        de evolução. Cada sessão é desenhada exclusivamente para suas necessidades, 
+                        seus desafios e seus sonhos.
+                    </p>
+                    <div class="about-signature">— Eva</div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- ═══════════════ SERVICES ═══════════════ -->
+    <section class="services" id="mentorias">
+        <div class="section-container">
+            <div class="services-header reveal">
+                <div class="section-label" style="justify-content:center">Programas de Mentoria</div>
+                <h2>Escolha o caminho ideal para a <em>sua transformação</em></h2>
+                <p>Cada programa foi cuidadosamente desenhado para atender diferentes momentos da sua jornada.</p>
+            </div>
+            <div class="services-grid">
+                <div class="service-card reveal" style="transition-delay: 0.1s">
+                    <div class="service-icon">🌱</div>
+                    <h3>Despertar Interior</h3>
+                    <p>Para quem está iniciando sua jornada de autoconhecimento e deseja encontrar clareza e propósito.</p>
+                    <ul class="service-features">
+                        <li>4 sessões individuais de 1h</li>
+                        <li>Mapeamento de crenças limitantes</li>
+                        <li>Plano de ação personalizado</li>
+                        <li>Material exclusivo de apoio</li>
+                        <li>Suporte via WhatsApp por 30 dias</li>
+                    </ul>
+                    <span class="service-price">A partir de R$ 997</span>
+                </div>
+                <div class="service-card reveal" style="transition-delay: 0.25s">
+                    <div class="service-icon">🦋</div>
+                    <h3>Transformação Profunda</h3>
+                    <p>Uma imersão completa para quem busca uma mudança significativa em todas as áreas da vida.</p>
+                    <ul class="service-features">
+                        <li>8 sessões individuais de 1h30</li>
+                        <li>Análise completa de perfil comportamental</li>
+                        <li>Reprogramação de crenças</li>
+                        <li>Planejamento estratégico de vida</li>
+                        <li>Suporte via WhatsApp por 60 dias</li>
+                        <li>2 sessões bônus de follow-up</li>
+                    </ul>
+                    <span class="service-price">A partir de R$ 2.497</span>
+                </div>
+                <div class="service-card reveal" style="transition-delay: 0.4s">
+                    <div class="service-icon">👑</div>
+                    <h3>Liderança Feminina</h3>
+                    <p>Para mulheres que desejam liderar com autenticidade e impactar positivamente o mundo ao redor.</p>
+                    <ul class="service-features">
+                        <li>12 sessões individuais de 1h30</li>
+                        <li>Mentoria de carreira e posicionamento</li>
+                        <li>Desenvolvimento de marca pessoal</li>
+                        <li>Networking exclusivo</li>
+                        <li>Suporte via WhatsApp por 90 dias</li>
+                        <li>Acesso ao grupo VIP de líderes</li>
+                    </ul>
+                    <span class="service-price">A partir de R$ 4.997</span>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- ═══════════════ METHODOLOGY ═══════════════ -->
+    <section class="methodology" id="metodo">
+        <div class="methodology-header">
+            <div class="section-label">Meu Método</div>
+            <h2>O caminho para sua <em>evolução</em></h2>
+            <p>Uma jornada estruturada em 4 pilares fundamentais que garantem resultados profundos e duradouros.</p>
+        </div>
+        <div class="method-steps">
+            <div class="method-step">
+                <div class="step-number">01</div>
+                <div class="step-content">
+                    <h3>Consciência & Diagnóstico</h3>
+                    <p>Iniciamos com um profundo processo de autoconhecimento. Mapeamos suas crenças, padrões comportamentais, pontos fortes e áreas que precisam de atenção, criando um diagnóstico preciso do seu momento atual.</p>
+                </div>
+            </div>
+            <div class="method-step">
+                <div class="step-number">02</div>
+                <div class="step-content">
+                    <h3>Clareza & Visão</h3>
+                    <p>Definimos juntas onde você quer chegar. Criamos uma visão clara e inspiradora do seu futuro, estabelecendo metas alinhadas com seus valores mais profundos e seu propósito de vida.</p>
+                </div>
+            </div>
+            <div class="method-step">
+                <div class="step-number">03</div>
+                <div class="step-content">
+                    <h3>Ação & Transformação</h3>
+                    <p>Construímos um plano de ação estratégico e implementamos mudanças reais. Trabalhamos na reprogramação de crenças limitantes e na construção de novos hábitos que sustentam sua evolução.</p>
+                </div>
+            </div>
+            <div class="method-step">
+                <div class="step-number">04</div>
+                <div class="step-content">
+                    <h3>Integração & Sustentabilidade</h3>
+                    <p>Consolidamos as transformações e criamos mecanismos de sustentabilidade para que os resultados sejam permanentes. Você sai com autonomia e ferramentas para continuar evoluindo.</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- ═══════════════ RESULTS ═══════════════ -->
+    <section class="results">
+        <div class="results-grid">
+            <div class="result-item reveal">
+                <div class="result-number" data-count="500">0</div>
+                <div class="result-label">Mentoradas</div>
+            </div>
+            <div class="result-item reveal" style="transition-delay: 0.15s">
+                <div class="result-number" data-count="2000">0</div>
+                <div class="result-label">Horas de Mentoria</div>
+            </div>
+            <div class="result-item reveal" style="transition-delay: 0.3s">
+                <div class="result-number" data-count="98">0</div>
+                <div class="result-label">% Satisfação</div>
+            </div>
+            <div class="result-item reveal" style="transition-delay: 0.45s">
+                <div class="result-number" data-count="8">0</div>
+                <div class="result-label">Anos de Experiência</div>
+            </div>
+        </div>
+    </section>
+
+    <!-- ═══════════════ TESTIMONIALS ═══════════════ -->
+    <section class="testimonials" id="depoimentos">
+        <div class="section-container">
+            <div class="testimonials-header reveal">
+                <div class="section-label" style="justify-content:center">Depoimentos</div>
+                <h2>O que dizem as mulheres que <em>transformaram</em> suas vidas</h2>
+            </div>
+            <div class="testimonials-slider reveal">
+                <div class="testimonials-track">
+                    <div class="testimonial-card">
+                        <div class="testimonial-stars">★★★★★</div>
+                        <div class="testimonial-quote">"</div>
+                        <p class="testimonial-text">
+                            A mentoria com a Eva mudou completamente minha perspectiva de vida. 
+                            Descobri meu propósito e hoje vivo com muito mais clareza e confiança. 
+                            Ela tem o dom de enxergar em nós o que ainda não conseguimos ver.
+                        </p>
+                        <div class="testimonial-author">
+                            <div class="testimonial-avatar">MC</div>
+                            <div>
+                                <div class="testimonial-name">Mariana Costa</div>
+                                <div class="testimonial-role">Empreendedora Digital</div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="testimonial-card">
+                        <div class="testimonial-stars">★★★★★</div>
+                        <div class="testimonial-quote">"</div>
+                        <p class="testimonial-text">
+                            Eu estava perdida na minha carreira e a Eva me ajudou a encontrar 
+                            minha direção. Três meses depois, fui promovida e estou liderando 
+                            uma equipe incrível. Gratidão eterna!
+                        </p>
+                        <div class="testimonial-author">
+                            <div class="testimonial-avatar">LS</div>
+                            <div>
+                                <div class="testimonial-name">Larissa Santos</div>
+                                <div class="testimonial-role">Gerente de Projetos</div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="testimonial-card">
+                        <div class="testimonial-stars">★★★★★</div>
+                        <div class="testimonial-quote">"</div>
+                        <p class="testimonial-text">
+                            O processo de mentoria foi transformador. Eva me ajudou a superar 
+                            crenças limitantes que carregava há anos. Hoje me sinto livre, 
+                            empoderada e pronta para conquistar tudo que eu mereço.
+                        </p>
+                        <div class="testimonial-author">
+                            <div class="testimonial-avatar">AF</div>
+                            <div>
+                                <div class="testimonial-name">Ana Ferreira</div>
+                                <div class="testimonial-role">Psicóloga</div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="testimonial-card">
+                        <div class="testimonial-stars">★★★★★</div>
+                        <div class="testimonial-quote">"</div>
+                        <p class="testimonial-text">
+                            Fiz o programa de Liderança Feminina e foi a melhor decisão da minha 
+                            vida profissional. A Eva me ensinou a liderar com autenticidade, 
+                            sem perder minha essência. Recomendo de olhos fechados.
+                        </p>
+                        <div class="testimonial-author">
+                            <div class="testimonial-avatar">PR</div>
+                            <div>
+                                <div class="testimonial-name">Patrícia Rodrigues</div>
+                                <div class="testimonial-role">CEO & Fundadora</div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="testimonial-card">
+                        <div class="testimonial-stars">★★★★★</div>
+                        <div class="testimonial-quote">"</div>
+                        <p class="testimonial-text">
+                            Com a Eva, aprendi que o verdadeiro sucesso vem de dentro. 
+                            Ela criou um espaço seguro para eu me reconectar comigo mesma. 
+                            Hoje tenho um negócio próspero e uma vida equilibrada.
+                        </p>
+                        <div class="testimonial-author">
+                            <div class="testimonial-avatar">JM</div>
+                            <div>
+                                <div class="testimonial-name">Juliana Mendes</div>
+                                <div class="testimonial-role">Coach de Bem-estar</div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- ═══════════════ INSTAGRAM ═══════════════ -->
+    <section class="instagram-section" id="instagram">
+        <div class="section-label" style="justify-content:center">Siga no Instagram</div>
+        <h2>Conteúdo que <em>inspira</em></h2>
+        <p class="instagram-handle">Acompanhe dicas diárias em <a href="https://www.instagram.com/evamentora/" target="_blank" rel="noopener">@evamentora</a></p>
+        <div class="instagram-grid">
+            <div class="instagram-item reveal-scale" style="transition-delay:0.05s">
+                <img src="https://images.pexels.com/photos/9064304/pexels-photo-9064304.jpeg?auto=compress&cs=tinysrgb&fit=crop&h=400&w=400" alt="Post Instagram 1" loading="lazy">
+                <div class="instagram-item-overlay"><span>♡</span></div>
+            </div>
+            <div class="instagram-item reveal-scale" style="transition-delay:0.15s">
+                <img src="https://images.pexels.com/photos/34032223/pexels-photo-34032223.jpeg?auto=compress&cs=tinysrgb&fit=crop&h=400&w=400" alt="Post Instagram 2" loading="lazy">
+                <div class="instagram-item-overlay"><span>♡</span></div>
+            </div>
+            <div class="instagram-item reveal-scale" style="transition-delay:0.25s">
+                <img src="https://images.pexels.com/photos/9065235/pexels-photo-9065235.jpeg?auto=compress&cs=tinysrgb&fit=crop&h=400&w=400" alt="Post Instagram 3" loading="lazy">
+                <div class="instagram-item-overlay"><span>♡</span></div>
+            </div>
+            <div class="instagram-item reveal-scale" style="transition-delay:0.35s">
+                <img src="https://images.pexels.com/photos/38139775/pexels-photo-38139775.jpeg?auto=compress&cs=tinysrgb&fit=crop&h=400&w=400" alt="Post Instagram 4" loading="lazy">
+                <div class="instagram-item-overlay"><span>♡</span></div>
+            </div>
+            <div class="instagram-item reveal-scale" style="transition-delay:0.45s">
+                <img src="https://images.pexels.com/photos/8530316/pexels-photo-8530316.jpeg?auto=compress&cs=tinysrgb&fit=crop&h=400&w=400" alt="Post Instagram 5" loading="lazy">
+                <div class="instagram-item-overlay"><span>♡</span></div>
+            </div>
+            <div class="instagram-item reveal-scale" style="transition-delay:0.55s">
+                <img src="https://images.pexels.com/photos/33090262/pexels-photo-33090262.jpeg?auto=compress&cs=tinysrgb&fit=crop&h=400&w=400" alt="Post Instagram 6" loading="lazy">
+                <div class="instagram-item-overlay"><span>♡</span></div>
+            </div>
+            <div class="instagram-item reveal-scale" style="transition-delay:0.65s">
+                <img src="https://images.pexels.com/photos/9065292/pexels-photo-9065292.jpeg?auto=compress&cs=tinysrgb&fit=crop&h=400&w=400" alt="Post Instagram 7" loading="lazy">
+                <div class="instagram-item-overlay"><span>♡</span></div>
+            </div>
+            <div class="instagram-item reveal-scale" style="transition-delay:0.75s">
+                <img src="https://images.pexels.com/photos/3918672/pexels-photo-3918672.jpeg?auto=compress&cs=tinysrgb&fit=crop&h=400&w=400" alt="Post Instagram 8" loading="lazy">
+                <div class="instagram-item-overlay"><span>♡</span></div>
+            </div>
+        </div>
+    </section>
+
+    <!-- ═══════════════ CONTACT ═══════════════ -->
+    <section class="contact" id="contato">
+        <div class="contact-wrapper">
+            <div class="contact-info reveal-left">
+                <div class="section-label">Entre em Contato</div>
+                <h2>Pronta para dar o <em>primeiro passo?</em></h2>
+                <p>
+                    Agende uma sessão exploratória gratuita de 30 minutos e descubra 
+                    como a mentoria pode transformar sua vida. Sem compromisso, 
+                    sem pressão — apenas uma conversa genuína sobre seus sonhos e objetivos.
+                </p>
+                <ul class="contact-details">
+                    <li>
+                        <div class="cd-icon">📧</div>
+                        <div>
+                            <strong>E-mail</strong><br>
+                            <a href="mailto:contato@evamentora.com.br">contato@evamentora.com.br</a>
+                        </div>
+                    </li>
+                    <li>
+                        <div class="cd-icon">📱</div>
+                        <div>
+                            <strong>WhatsApp</strong><br>
+                            <a href="https://wa.me/5511999999999" target="_blank">(11) 99999-9999</a>
+                        </div>
+                    </li>
+                    <li>
+                        <div class="cd-icon">📍</div>
+                        <div>
+                            <strong>Atendimento</strong><br>
+                            Online (todo o Brasil) e Presencial
+                        </div>
+                    </li>
+                    <li>
+                        <div class="cd-icon">📸</div>
+                        <div>
+                            <strong>Instagram</strong><br>
+                            <a href="https://www.instagram.com/evamentora/" target="_blank">@evamentora</a>
+                        </div>
+                    </li>
+                </ul>
+            </div>
+            <div class="contact-form reveal-right">
+                <form action="https://formsubmit.co/neemiassouzajn@gmail.com" method="POST">
+
+    <input type="hidden" name="_subject" value="Novo contato do site Eva Mentora">
+    <input type="hidden" name="_captcha" value="false">
+
+    <div class="form-group">
+        <label>Nome completo</label>
+        <input type="text" name="name" placeholder="Seu nome" required>
+    </div>
+
+    <div class="form-group">
+        <label>E-mail</label>
+        <input type="email" name="email" placeholder="seu@email.com" required>
+    </div>
+
+    <div class="form-group">
+        <label>WhatsApp</label>
+        <input type="tel" name="phone" placeholder="(00) 00000-0000">
+    </div>
+
+    <div class="form-group">
+        <label>Interesse</label>
+        <select name="interest">
+            <option value="">Selecione um programa</option>
+            <option value="despertar">Despertar Interior</option>
+            <option value="transformacao">Transformação Profunda</option>
+            <option value="lideranca">Liderança Feminina</option>
+            <option value="outro">Outro assunto</option>
+        </select>
+    </div>
+
+    <div class="form-group">
+        <label>Mensagem</label>
+        <textarea name="message" placeholder="Conte-me um pouco sobre você..."></textarea>
+    </div>
+
+    <button type="submit" class="form-submit">Enviar Mensagem ✦</button>
+
+</form>
+         </div>
+        </div>
+    </section>
+
+    <!-- ═══════════════ FOOTER ═══════════════ -->
+    <footer class="footer">
+        <div class="footer-inner">
+            <div>
+                <div class="footer-brand">Eva <span>Mentora</span></div>
+                <p class="footer-desc">
+                    Mentoria de desenvolvimento pessoal, liderança feminina e empoderamento. 
+                    Transformando vidas com propósito e autenticidade.
+                </p>
+                <div class="footer-social">
+                    <a href="https://www.instagram.com/evamentora/" target="_blank" rel="noopener" aria-label="Instagram">
+                        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="2" y="2" width="20" height="20" rx="5" ry="5"></rect><path d="m16 11.37A4 4 0 1 1 12.63 8 4 4 0 0 1 16 11.37z"></path><line x1="17.5" y1="6.5" x2="17.51" y2="6.5"></line></svg>
+                    </a>
+                    <a href="#" aria-label="YouTube">
+                        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M22.54 6.42a2.78 2.78 0 0 0-1.94-2C18.88 4 12 4 12 4s-6.88 0-8.6.46a2.78 2.78 0 0 0-1.94 2A29 29 0 0 0 1 11.75a29 29 0 0 0 .46 5.33A2.78 2.78 0 0 0 3.4 19.1c1.72.46 8.6.46 8.6.46s6.88 0 8.6-.46a2.78 2.78 0 0 0 1.94-2 29 29 0 0 0 .46-5.25 29 29 0 0 0-.46-5.43z"></path><polygon points="9.75 15.02 15.5 11.75 9.75 8.48 9.75 15.02"></polygon></svg>
+                    </a>
+                    <a href="#" aria-label="LinkedIn">
+                        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M16 8a6 6 0 0 1 6 6v7h-4v-7a2 2 0 0 0-2-2 2 2 0 0 0-2 2v7h-4v-7a6 6 0 0 1 6-6z"></path><rect x="2" y="9" width="4" height="12"></rect><circle cx="4" cy="4" r="2"></circle></svg>
+                    </a>
+                </div>
+            </div>
+            <div class="footer-col">
+                <h4>Navegação</h4>
+                <ul>
+                    <li><a href="#sobre">Sobre</a></li>
+                    <li><a href="#mentorias">Mentorias</a></li>
+                    <li><a href="#metodo">Método</a></li>
+                    <li><a href="#depoimentos">Depoimentos</a></li>
+                    <li><a href="#contato">Contato</a></li>
+                </ul>
+            </div>
+            <div class="footer-col">
+                <h4>Programas</h4>
+                <ul>
+                    <li><a href="#mentorias">Despertar Interior</a></li>
+                    <li><a href="#mentorias">Transformação Profunda</a></li>
+                    <li><a href="#mentorias">Liderança Feminina</a></li>
+                </ul>
+            </div>
+            <div class="footer-col">
+                <h4>Legal</h4>
+                <ul>
+                    <li><a href="#">Política de Privacidade</a></li>
+                    <li><a href="#">Termos de Uso</a></li>
+                </ul>
+            </div>
+        </div>
+        <div class="footer-bottom">
+            <span>© 2025 Eva Mentora. Todos os direitos reservados.</span>
+            <span>Feito com ♡ e propósito</span>
+        </div>
+    </footer>
+
+    <!-- Back to Top -->
+    <button class="back-to-top" id="backToTop" aria-label="Voltar ao topo">↑</button>
+
+    <!-- WhatsApp Float -->
+    <a href="https://wa.me/5511999999999?text=Olá%20Eva!%20Gostaria%20de%20saber%20mais%20sobre%20suas%20mentorias." class="whatsapp-float" target="_blank" rel="noopener" aria-label="WhatsApp">
+        <svg viewBox="0 0 24 24"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413z"/></svg>
+    </a>
+
+    <!-- Toast Notification -->
+    <div class="toast" id="toast"></div>
+
+    <!-- ═══════════════════════════════════════════════════
+         JAVASCRIPT
+         ═══════════════════════════════════════════════════ -->
+    <script>
+    (function() {
+        'use strict';
+
+        // ═══════════════ LOADER ═══════════════
+        window.addEventListener('load', function() {
+            setTimeout(function() {
+                document.getElementById('loader').classList.add('hidden');
+            }, 1800);
+        });
+
+        // ═══════════════ CUSTOM CURSOR ═══════════════
+        const cursorDot = document.getElementById('cursorDot');
+        const cursorRing = document.getElementById('cursorRing');
+        let mouseX = 0, mouseY = 0;
+        let ringX = 0, ringY = 0;
+
+        if (window.innerWidth > 768) {
+            document.addEventListener('mousemove', function(e) {
+                mouseX = e.clientX;
+                mouseY = e.clientY;
+                cursorDot.style.left = mouseX - 4 + 'px';
+                cursorDot.style.top = mouseY - 4 + 'px';
+            });
+
+            function animateRing() {
+                ringX += (mouseX - ringX) * 0.12;
+                ringY += (mouseY - ringY) * 0.12;
+                cursorRing.style.left = ringX - 20 + 'px';
+                cursorRing.style.top = ringY - 20 + 'px';
+                requestAnimationFrame(animateRing);
+            }
+            animateRing();
+
+            const interactiveElements = document.querySelectorAll('a, button, input, textarea, select, .service-card, .testimonial-card, .instagram-item');
+            interactiveElements.forEach(function(el) {
+                el.addEventListener('mouseenter', function() {
+                    cursorRing.classList.add('hover');
+                });
+                el.addEventListener('mouseleave', function() {
+                    cursorRing.classList.remove('hover');
+                });
+            });
+        }
+
+        // ═══════════════ NAVBAR SCROLL ═══════════════
+        const navbar = document.getElementById('navbar');
+        const backToTop = document.getElementById('backToTop');
+
+        window.addEventListener('scroll', function() {
+            const scrollY = window.scrollY;
+            if (scrollY > 80) {
+                navbar.classList.add('scrolled');
+            } else {
+                navbar.classList.remove('scrolled');
+            }
+            if (scrollY > 600) {
+                backToTop.classList.add('visible');
+            } else {
+                backToTop.classList.remove('visible');
+            }
+        });
+
+        backToTop.addEventListener('click', function() {
+            window.scrollTo({ top: 0, behavior: 'smooth' });
+        });
+
+        // ═══════════════ MOBILE MENU ═══════════════
+        const menuToggle = document.getElementById('menuToggle');
+        const mobileMenu = document.getElementById('mobileMenu');
+
+        menuToggle.addEventListener('click', function() {
+            menuToggle.classList.toggle('active');
+            mobileMenu.classList.toggle('active');
+            document.body.style.overflow = mobileMenu.classList.contains('active') ? 'hidden' : '';
+        });
+
+        window.closeMobile = function() {
+            menuToggle.classList.remove('active');
+            mobileMenu.classList.remove('active');
+            document.body.style.overflow = '';
+        };
+
+        // ═══════════════ SCROLL REVEAL ═══════════════
+        function revealOnScroll() {
+            const reveals = document.querySelectorAll('.reveal, .reveal-left, .reveal-right, .reveal-scale, .method-step');
+            const windowHeight = window.innerHeight;
+
+            reveals.forEach(function(el) {
+                const elementTop = el.getBoundingClientRect().top;
+                const revealPoint = 120;
+                if (elementTop < windowHeight - revealPoint) {
+                    el.classList.add('visible');
+                }
+            });
+        }
+
+        window.addEventListener('scroll', revealOnScroll);
+        window.addEventListener('load', function() {
+            setTimeout(revealOnScroll, 200);
+        });
+
+        // ═══════════════ COUNTER ANIMATION ═══════════════
+        function animateCounters() {
+            const counters = document.querySelectorAll('[data-count]');
+            counters.forEach(function(counter) {
+                if (counter.dataset.animated) return;
+                const rect = counter.getBoundingClientRect();
+                if (rect.top < window.innerHeight && rect.bottom > 0) {
+                    counter.dataset.animated = 'true';
+                    const target = parseInt(counter.getAttribute('data-count'));
+                    const duration = 2000;
+                    const startTime = performance.now();
+
+                    function updateCounter(currentTime) {
+                        const elapsed = currentTime - startTime;
+                        const progress = Math.min(elapsed / duration, 1);
+                        const easeOut = 1 - Math.pow(1 - progress, 3);
+                        const current = Math.floor(easeOut * target);
+
+                        if (target >= 1000) {
+                            counter.textContent = current.toLocaleString('pt-BR') + '+';
+                        } else if (target === 98) {
+                            counter.textContent = current + '%';
+                        } else {
+                            counter.textContent = current + '+';
+                        }
+
+                        if (progress < 1) {
+                            requestAnimationFrame(updateCounter);
+                        }
+                    }
+                    requestAnimationFrame(updateCounter);
+                }
+            });
+        }
+
+        window.addEventListener('scroll', animateCounters);
+
+        // ═══════════════ SMOOTH SCROLL ═══════════════
+        document.querySelectorAll('a[href^="#"]').forEach(function(anchor) {
+            anchor.addEventListener('click', function(e) {
+                e.preventDefault();
+                const targetId = this.getAttribute('href');
+                const target = document.querySelector(targetId);
+                if (target) {
+                    const offsetTop = target.getBoundingClientRect().top + window.scrollY - 80;
+                    window.scrollTo({ top: offsetTop, behavior: 'smooth' });
+                }
+            });
+        });
+
+        // ═══════════════ FORM HANDLING ═══════════════
+
+        // ═══════════════ PHONE MASK ═══════════════
+        const phoneInput = document.getElementById('phone');
+        phoneInput.addEventListener('input', function(e) {
+            let value = e.target.value.replace(/\D/g, '');
+            if (value.length > 11) value = value.substring(0, 11);
+            if (value.length > 6) {
+                value = '(' + value.substring(0, 2) + ') ' + value.substring(2, 7) + '-' + value.substring(7);
+            } else if (value.length > 2) {
+                value = '(' + value.substring(0, 2) + ') ' + value.substring(2);
+            } else if (value.length > 0) {
+                value = '(' + value;
+            }
+            e.target.value = value;
+        });
+
+        // ═══════════════ PARTICLE CANVAS ═══════════════
+        const canvas = document.getElementById('particle-canvas');
+        const ctx = canvas.getContext('2d');
+        let particles = [];
+        let animId;
+
+        function resizeCanvas() {
+            const hero = document.querySelector('.hero');
+            canvas.width = hero.offsetWidth;
+            canvas.height = hero.offsetHeight;
+        }
+
+        function createParticles() {
+            particles = [];
+            const count = window.innerWidth > 768 ? 40 : 20;
+            for (let i = 0; i < count; i++) {
+                particles.push({
+                    x: Math.random() * canvas.width,
+                    y: Math.random() * canvas.height,
+                    size: Math.random() * 2 + 0.5,
+                    speedX: (Math.random() - 0.5) * 0.3,
+                    speedY: (Math.random() - 0.5) * 0.3,
+                    opacity: Math.random() * 0.3 + 0.1
+                });
+            }
+        }
+
+        function drawParticles() {
+            ctx.clearRect(0, 0, canvas.width, canvas.height);
+            particles.forEach(function(p) {
+                ctx.beginPath();
+                ctx.arc(p.x, p.y, p.size, 0, Math.PI * 2);
+                ctx.fillStyle = 'rgba(212, 167, 106, ' + p.opacity + ')';
+                ctx.fill();
+
+                p.x += p.speedX;
+                p.y += p.speedY;
+
+                if (p.x < 0) p.x = canvas.width;
+                if (p.x > canvas.width) p.x = 0;
+                if (p.y < 0) p.y = canvas.height;
+                if (p.y > canvas.height) p.y = 0;
+            });
+
+            // Draw connections
+            for (let i = 0; i < particles.length; i++) {
+                for (let j = i + 1; j < particles.length; j++) {
+                    const dx = particles[i].x - particles[j].x;
+                    const dy = particles[i].y - particles[j].y;
+                    const distance = Math.sqrt(dx * dx + dy * dy);
+                    if (distance < 150) {
+                        ctx.beginPath();
+                        ctx.moveTo(particles[i].x, particles[i].y);
+                        ctx.lineTo(particles[j].x, particles[j].y);
+                        ctx.strokeStyle = 'rgba(212, 167, 106, ' + (0.05 * (1 - distance / 150)) + ')';
+                        ctx.lineWidth = 0.5;
+                        ctx.stroke();
+                    }
+                }
+            }
+            animId = requestAnimationFrame(drawParticles);
+        }
+
+        resizeCanvas();
+        createParticles();
+        drawParticles();
+
+        window.addEventListener('resize', function() {
+            resizeCanvas();
+            createParticles();
+        });
+
+        // ═══════════════ PARALLAX EFFECT ═══════════════
+        window.addEventListener('scroll', function() {
+            const scrollY = window.scrollY;
+            const heroContent = document.querySelector('.hero-content');
+            const heroVisual = document.querySelector('.hero-visual');
+            if (heroContent && scrollY < window.innerHeight) {
+                heroContent.style.transform = 'translateY(' + (scrollY * 0.15) + 'px)';
+                heroVisual.style.transform = 'translateY(' + (scrollY * 0.08) + 'px)';
+            }
+        });
+
+        // ═══════════════ NAVBAR ACTIVE LINK ═══════════════
+        const sections = document.querySelectorAll('section[id]');
+
+        window.addEventListener('scroll', function() {
+            const scrollY = window.scrollY + 150;
+            sections.forEach(function(section) {
+                const top = section.offsetTop;
+                const height = section.offsetHeight;
+                const id = section.getAttribute('id');
+                const link = document.querySelector('.nav-links a[href="#' + id + '"]');
+                if (link) {
+                    if (scrollY >= top && scrollY < top + height) {
+                        link.style.color = 'var(--color-primary)';
+                    } else {
+                        link.style.color = '';
+                    }
+                }
+            });
+        });
+
+        // ═══════════════ TESTIMONIALS AUTO-SCROLL ═══════════════
+        const track = document.querySelector('.testimonials-track');
+        if (track) {
+            let autoScrollInterval;
+            function startAutoScroll() {
+                autoScrollInterval = setInterval(function() {
+                    track.scrollBy({ left: 400, behavior: 'smooth' });
+                    if (track.scrollLeft + track.clientWidth >= track.scrollWidth - 10) {
+                        setTimeout(function() {
+                            track.scrollTo({ left: 0, behavior: 'smooth' });
+                        }, 1000);
+                    }
+                }, 4000);
+            }
+            startAutoScroll();
+
+            track.addEventListener('mouseenter', function() {
+                clearInterval(autoScrollInterval);
+            });
+            track.addEventListener('mouseleave', function() {
+                startAutoScroll();
+            });
+            track.addEventListener('touchstart', function() {
+                clearInterval(autoScrollInterval);
+            });
+            track.addEventListener('touchend', function() {
+                startAutoScroll();
+            });
+        }
+
+    })();
+    </script>
+</body>
+</html>
