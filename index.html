@@ -1974,24 +1974,23 @@
                 </ul>
             </div>
             <div class="contact-form reveal-right">
-                <form action="https://formsubmit.co/neemiassouzajn@gmail.com" method="POST">
+                <form id="contactForm">
 
-    <input type="hidden" name="_subject" value="Novo contato do site Eva Mentora">
     <input type="hidden" name="_captcha" value="false">
 
     <div class="form-group">
         <label>Nome completo</label>
-        <input type="text" name="name" placeholder="Seu nome" required>
+        <input type="text" name="name" id="name" placeholder="Seu nome" required>
     </div>
 
     <div class="form-group">
         <label>E-mail</label>
-        <input type="email" name="email" placeholder="seu@email.com" required>
+        <input type="email" name="email" id="email" placeholder="seu@email.com" required>
     </div>
 
     <div class="form-group">
         <label>WhatsApp</label>
-        <input type="tel" name="phone" placeholder="(00) 00000-0000">
+        <input type="tel" name="phone" id="phone" placeholder="(00) 00000-0000">
     </div>
 
     <div class="form-group">
@@ -2387,6 +2386,38 @@
         }
 
     })();
+
+// ═══════════════ FORM AJAX (SEM REDIRECT) ═══════════════
+const form = document.getElementById("contactForm");
+const toast = document.getElementById("toast");
+
+function showToast(message) {
+    toast.textContent = message;
+    toast.classList.add("show");
+
+    setTimeout(() => {
+        toast.classList.remove("show");
+    }, 3000);
+}
+
+form.addEventListener("submit", function (e) {
+    e.preventDefault();
+
+    const data = new FormData(form);
+
+    fetch("https://formsubmit.co/ajax/neemiassouzajn@gmail.com", {
+        method: "POST",
+        body: data
+    })
+    .then(response => response.json())
+    .then(data => {
+        showToast("✨ Mensagem enviada com sucesso!");
+        form.reset();
+    })
+    .catch(error => {
+        showToast("❌ Erro ao enviar. Tente novamente.");
+    });
+});
     </script>
 </body>
 </html>
